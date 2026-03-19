@@ -57,7 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const TopBannerSection(),
-            const SmallBannersSection(),
+            SmallBannersSection(
+                onTap: (label) => _handleTap(context, 'Spanduk Kecil $label')), // Fungsionalitas spanduk kecil
             const MenuGridSection(),
             const SizedBox(height: 30), // Padding bawah agar menu tidak tertutup bilah navigasi
           ],
@@ -81,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Fungsi pembantu untuk menangani ketukan tombol
+  // Fungsi pembantu untuk menangani ketukan tombol umum
   void _handleTap(BuildContext context, String message) {
     print('Ketuk: $message');
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -99,7 +100,7 @@ class TopBannerSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Visual Latar Belakang Spanduk (Gradien Turkois & Kota Placeholder)
+        // Visual Latar Belakang Spanduk (Gradien Turkois & Visual Placeholder)
         Container(
           height: 250,
           decoration: const BoxDecoration(
@@ -193,12 +194,15 @@ class TopBannerSection extends StatelessWidget {
                     )),
           ),
         ),
-        // Teks Kepatuhan Kecil Verbatim
+        // Teks Kepatuhan Kecil Verbatim - DIPERBAIKI (Mencegah Overflow)
         Positioned(
           bottom: 10,
           left: 20,
+          right: 20, // Tambahkan padding kanan agar teks tidak overflow
           child: const Text(
             'PT Bank Syariah Indonesia Tbk terdaftar dan diawasi oleh Otoritas Jasa Keuangan. dan merupakan Peserta Penjaminan LPS',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(color: Colors.black45, fontSize: 9),
           ),
         ),
@@ -209,7 +213,9 @@ class TopBannerSection extends StatelessWidget {
 
 // --- BAGIAN 2: SPANDUK KECIL HORIZONTAL ---
 class SmallBannersSection extends StatelessWidget {
-  const SmallBannersSection({super.key});
+  final Function(String) onTap;
+
+  const SmallBannersSection({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -218,43 +224,61 @@ class SmallBannersSection extends StatelessWidget {
       child: Row(
         children: [
           _buildSmallBanner(
-              FontAwesomeIcons.donate, 'JadiBerkah.ID', 'Ayo berdonasi lebih mudah di JadiBerkah', const Color(0xFFF1FDFD), bsiTeal, bsiTextBlack),
+              context,
+              FontAwesomeIcons.donate,
+              'JadiBerkah.ID',
+              'Ayo berdonasi lebih mudah di JadiBerkah',
+              const Color(0xFFF1FDFD),
+              bsiTeal,
+              bsiTextBlack),
           const SizedBox(width: 10),
           _buildSmallBanner(
-              FontAwesomeIcons.mosque, 'BSI', 'BSI MASLAHAT Wakaf Pembangunan Masjid Bakauheni', const Color(0xFFFEFDF7), bsiTeal, Colors.black),
+              context,
+              FontAwesomeIcons.mosque,
+              'BSI MASLAHAT Wakaf', // Teks verbatim diperbaiki
+              'BSI MASLAHAT Wakaf Pembangunan Masjid Bakauheni',
+              const Color(0xFFFEFDF7),
+              bsiTeal,
+              Colors.black),
         ],
       ),
     );
   }
 
-  // Fungsi pembantu untuk membuat spanduk kecil
-  Widget _buildSmallBanner(IconData iconData, String title, String subtitle, Color bgColor, Color titleColor, Color subtitleColor) {
+  // Fungsi pembantu untuk membuat spanduk kecil dengan ketukan
+  Widget _buildSmallBanner(BuildContext context, IconData iconData, String title, String subtitle, Color bgColor, Color titleColor, Color subtitleColor) {
     return Expanded(
-      child: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Stack(
-          children: [
-            // Visual turkois placeholder di sisi kanan (seperti di gambar)
-             Positioned(
-              right: 0, top: 0,
-              child: FaIcon(iconData, color: bsiOrange, size: 60), // Placeholder
-            ),
-            Positioned(
-              left: 10, top: 10,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: TextStyle(color: titleColor, fontWeight: FontWeight.bold, fontSize: 12)),
-                  const SizedBox(height: 2),
-                  Text(subtitle, style: TextStyle(color: subtitleColor, fontSize: 10)),
-                ],
+      child: InkWell(
+        onTap: () {
+          onTap(title); // Callback fungsionalitas ketukan
+        },
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          height: 60,
+          decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Stack(
+            children: [
+              // Visual turkois placeholder di sisi kanan (seperti di gambar)
+               Positioned(
+                right: 0, top: 0,
+                child: FaIcon(iconData, color: bsiOrange, size: 60), // Placeholder
               ),
-            ),
-          ],
+              Positioned(
+                left: 10, top: 10,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: TextStyle(color: titleColor, fontWeight: FontWeight.bold, fontSize: 12)),
+                    const SizedBox(height: 2),
+                    Text(subtitle, style: TextStyle(color: subtitleColor, fontSize: 10)),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -292,7 +316,7 @@ class MenuGridSection extends StatelessWidget {
           crossAxisCount: 4,
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
-          childAspectRatio: 1.0, // Kisi persegi
+          childAspectRatio: 0.8, // DIPERBAIKI (Memberikan lebih banyak ruang vertikal)
         ),
         itemCount: menuItems.length,
         itemBuilder: (context, index) {
