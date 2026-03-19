@@ -14,7 +14,7 @@ class BSIApp extends StatelessWidget {
       title: 'Tugas UTS Sofyan',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF00A39D)), // Hijau Tosca BSI
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF00A39D)),
         useMaterial3: true,
       ),
       home: const HomeScreen(),
@@ -35,17 +35,16 @@ class HomeScreen extends StatelessWidget {
           children: [
             _buildSearchBar(),
             _buildGreeting(),
-            _buildMainBanner(),
-            _buildMiniBanners(),
+            _buildMainBanner(context),
+            _buildMiniBanners(context),
             _buildMenuGrid(context),
-            const SizedBox(height: 50), // Ruang kosong agar menu bawah tidak tertutup navigasi
+            const SizedBox(height: 50),
           ],
         ),
       ),
-      // Tombol QRIS mengambang di tengah
-      floatingActionButton: _buildQRISButton(),
+      floatingActionButton: _buildQRISButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _buildBottomNav(),
+      bottomNavigationBar: _buildBottomNav(context),
     );
   }
 
@@ -129,7 +128,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 3. NAMA SOFYAN & LOKASI
+  // 3. NAMA & LOKASI
   Widget _buildGreeting() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -153,69 +152,94 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 4. BANNER UTAMA (Placeholder Gradien)
-  Widget _buildMainBanner() {
+  // 4. BANNER UTAMA (Sudah pakai background gambar)
+  Widget _buildMainBanner(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: Container(
-        height: 150,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          gradient: const LinearGradient(
-            colors: [Color(0xFF6B48FF), Color(0xFFF8A83A)],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
+      child: InkWell(
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Banner Utama diklik!')));
+        },
+        child: Container(
+          height: 150,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            // Wulan pasang gambar dari internet di sini. Sofyan bisa ganti link-nya ya.
+            image: const DecorationImage(
+              image: NetworkImage('https://images.unsplash.com/photo-1557682250-33bd709cbe85?q=80&w=600&auto=format&fit=crop'),
+              fit: BoxFit.cover,
+              // Efek gelap supaya teks putihnya jelas
+              colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
+            ),
           ),
-        ),
-        child: const Center(
-          child: Text(
-            'HARI 9\nTetap Istiqomah',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+          child: const Center(
+            child: Text(
+              'HARI 9\nTetap Istiqomah',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+            ),
           ),
         ),
       ),
     );
   }
 
-  // 5. BANNER KECIL BAWAH
-  Widget _buildMiniBanners() {
+  // 5. BANNER KECIL BAWAH (Sudah pakai background gambar juga)
+  Widget _buildMiniBanners(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
           Expanded(
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.teal[50],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.volunteer_activism, color: Color(0xFF00A39D), size: 16),
-                  SizedBox(width: 5),
-                  Text('JadiBerkah.ID', style: TextStyle(color: Color(0xFF00A39D), fontWeight: FontWeight.bold, fontSize: 12)),
-                ],
+            child: InkWell(
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('JadiBerkah diklik!')));
+              },
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  image: const DecorationImage(
+                    image: NetworkImage('https://images.unsplash.com/photo-1532629345422-7515f3d16bb0?q=80&w=200&auto=format&fit=crop'),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.volunteer_activism, color: Colors.white, size: 16),
+                    SizedBox(width: 5),
+                    Text('JadiBerkah.ID', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                  ],
+                ),
               ),
             ),
           ),
           const SizedBox(width: 15),
           Expanded(
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.green[100],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.storefront, color: Colors.green, size: 16),
-                  SizedBox(width: 5),
-                  Text('Warteg Mobile', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 12)),
-                ],
+            child: InkWell(
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Warteg Mobile diklik!')));
+              },
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  image: const DecorationImage(
+                    image: NetworkImage('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=200&auto=format&fit=crop'),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.storefront, color: Colors.white, size: 16),
+                    SizedBox(width: 5),
+                    Text('Warteg Mobile', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                  ],
+                ),
               ),
             ),
           ),
@@ -224,7 +248,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 6. MENU GRID 12 TOMBOL
+  // 6. MENU GRID 12 TOMBOL (Error merah sudah diperbaiki)
   Widget _buildMenuGrid(BuildContext context) {
     final menus = [
       {'title': 'Info Rekening', 'icon': Icons.account_balance_wallet_outlined},
@@ -251,12 +275,12 @@ class HomeScreen extends StatelessWidget {
           crossAxisCount: 4,
           mainAxisSpacing: 15,
           crossAxisSpacing: 15,
-          childAspectRatio: 0.8,
+          // Wulan ubah rasionya jadi 0.72 supaya teks "Berbagi - Ziswaf" gak kepotong lagi
+          childAspectRatio: 0.72,
         ),
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-              // Menampilkan pesan saat tombol diklik
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Menu ${menus[index]['title']} diklik!'),
@@ -285,7 +309,6 @@ class HomeScreen extends StatelessWidget {
                       ),
                       child: Icon(menus[index]['icon'] as IconData, color: const Color(0xFF00A39D), size: 28),
                     ),
-                    // Ornamen kecil warna oranye di pojok ikon
                     Positioned(
                       bottom: 0,
                       right: 0,
@@ -317,26 +340,28 @@ class HomeScreen extends StatelessWidget {
   }
 
   // 7. TOMBOL QRIS MELINGKAR
-  Widget _buildQRISButton() {
+  Widget _buildQRISButton(BuildContext context) {
     return SizedBox(
       height: 75,
       width: 75,
       child: FloatingActionButton(
         backgroundColor: const Color(0xFF00A39D),
         elevation: 4,
-        onPressed: () {},
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('QRIS diklik!')));
+        },
         shape: const CircleBorder(
-          side: BorderSide(color: Colors.white, width: 3), // Garis putih di pinggir QRIS
+          side: BorderSide(color: Colors.white, width: 3),
         ),
         child: const Text('QRIS', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
       ),
     );
   }
 
-  // 8. NAVIGASI BAWAH WARNA ORANYE
-  Widget _buildBottomNav() {
+  // 8. NAVIGASI BAWAH WARNA ORANYE (Sudah bisa diklik semua)
+  Widget _buildBottomNav(BuildContext context) {
     return BottomAppBar(
-      color: const Color(0xFFF8A83A), // Warna Oranye BSI
+      color: const Color(0xFFF8A83A),
       surfaceTintColor: Colors.transparent,
       shape: const CircularNotchedRectangle(),
       notchMargin: 8.0,
@@ -345,26 +370,37 @@ class HomeScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _navItem(Icons.home_outlined, 'Beranda'),
-            _navItem(FontAwesomeIcons.mosque, 'Jadwal Sholat'),
-            const SizedBox(width: 40), // Ruang kosong di tengah untuk tombol QRIS
-            _navItem(Icons.chat_outlined, 'Pesan'),
-            _navItem(Icons.person_outline, 'Profil'),
+            _navItem(context, Icons.home_outlined, 'Beranda'),
+            _navItem(context, FontAwesomeIcons.mosque, 'Jadwal Sholat'),
+            const SizedBox(width: 40),
+            _navItem(context, Icons.chat_outlined, 'Pesan'),
+            _navItem(context, Icons.person_outline, 'Profil'),
           ],
         ),
       ),
     );
   }
 
-  Widget _navItem(IconData icon, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: Colors.white, size: 22),
-        const SizedBox(height: 4),
-        Text(label, style: const TextStyle(color: Colors.white, fontSize: 10)),
-      ],
+  Widget _navItem(BuildContext context, IconData icon, String label) {
+    // Wulan tambahkan InkWell di sini supaya Sofyan bisa ngeklik ikonnya
+    return InkWell(
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$label diklik!'),
+            duration: const Duration(milliseconds: 800),
+          ),
+        );
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: Colors.white, size: 22),
+          const SizedBox(height: 4),
+          Text(label, style: const TextStyle(color: Colors.white, fontSize: 10)),
+        ],
+      ),
     );
   }
 }
