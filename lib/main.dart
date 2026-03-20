@@ -29,7 +29,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: _buildAppBar(),
+      // Wulan tambahkan context di sini agar ikon di atas bisa memunculkan pesan
+      appBar: _buildAppBar(context), 
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -48,14 +49,17 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 1. HEADER & APPBAR
-  AppBar _buildAppBar() {
+  // 1. HEADER & APPBAR (Wulan fungsikan ikonnya di sini)
+  AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
       leading: IconButton(
         icon: const Icon(Icons.menu, color: Color(0xFF00A39D)),
-        onPressed: () {},
+        onPressed: () {
+          // Fungsi klik Ikon Menu
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Menu Navigasi diklik!')));
+        },
       ),
       title: Row(
         children: [
@@ -79,14 +83,20 @@ class HomeScreen extends StatelessWidget {
       actions: [
         IconButton(
           icon: const Icon(Icons.mail_outline, color: Color(0xFF00A39D)),
-          onPressed: () {},
+          onPressed: () {
+            // Fungsi klik Ikon Surat
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pesan Masuk diklik!')));
+          },
         ),
         Stack(
           alignment: Alignment.center,
           children: [
             IconButton(
               icon: const Icon(Icons.notifications_none, color: Color(0xFF00A39D)),
-              onPressed: () {},
+              onPressed: () {
+                // Fungsi klik Ikon Lonceng Notifikasi
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Notifikasi diklik!')));
+              },
             ),
             Positioned(
               top: 12,
@@ -166,7 +176,7 @@ class HomeScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
             // Wulan pasang gambar dari internet di sini. Sofyan bisa ganti link-nya ya.
             image: const DecorationImage(
-              image: NetworkImage('https://images.unsplash.com/photo-1557682250-33bd709cbe85?q=80&w=600&auto=format&fit=crop'),
+              image: NetworkImage('https://i.pinimg.com/1200x/2c/d7/95/2cd79538d2954d6530c1f136b6d7d5a5.jpg'),
               fit: BoxFit.cover,
               // Efek gelap supaya teks putihnya jelas
               colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
@@ -200,7 +210,7 @@ class HomeScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   image: const DecorationImage(
-                    image: NetworkImage('https://images.unsplash.com/photo-1532629345422-7515f3d16bb0?q=80&w=200&auto=format&fit=crop'),
+                    image: AssetImage('asset/berkah.jpg'),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
                   ),
@@ -227,7 +237,7 @@ class HomeScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   image: const DecorationImage(
-                    image: NetworkImage('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=200&auto=format&fit=crop'),
+                    image: AssetImage('asset/warteg.jpg'),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
                   ),
