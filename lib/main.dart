@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 1. HEADER & APPBAR (Logo Diperbesar)
+  // 1. HEADER & APPBAR 
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
@@ -124,7 +124,6 @@ class HomeScreen extends StatelessWidget {
       titleSpacing: 0,
       title: Row(
         children: [
-          // --- LOGO BSI DENGAN TEKS DIPERBESAR ---
           Stack(
             clipBehavior: Clip.none, 
             children: [
@@ -133,22 +132,21 @@ class HomeScreen extends StatelessWidget {
                 style: TextStyle(
                     color: Color(0xFF00A39D),
                     fontWeight: FontWeight.w900, 
-                    fontSize: 32), // Ukuran BSI dibesarkan
+                    fontSize: 32), 
               ),
               Positioned(
                 top: 2,
-                right: -10, // Menyesuaikan posisi bintang karena font membesar
-                child: const Icon(Icons.star, color: Color(0xFFF8A83A), size: 12), // Bintang sedikit dibesarkan
+                right: -10, 
+                child: const Icon(Icons.star, color: Color(0xFFF8A83A), size: 12), 
               ),
             ],
           ),
           
-          const SizedBox(width: 10), // Jarak sedikit dilebarkan agar seimbang
+          const SizedBox(width: 10), 
           
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
-              // Teks BANK SYARIAH INDONESIA dibesarkan menjadi ukuran 12
               Text('BANK SYARIAH', style: TextStyle(color: Color(0xFF00A39D), fontSize: 12, fontWeight: FontWeight.normal, height: 1.0)),
               Text('INDONESIA', style: TextStyle(color: Color(0xFF00A39D), fontSize: 12, fontWeight: FontWeight.normal, height: 1.0)),
             ],
@@ -466,7 +464,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 8. NAVIGASI BAWAH
+  // 8. NAVIGASI BAWAH (Wulan perbaiki layoutnya biar simetris)
   Widget _buildBottomNav(BuildContext context) {
     return BottomAppBar(
       color: const Color(0xFFF8A83A),
@@ -476,13 +474,13 @@ class HomeScreen extends StatelessWidget {
       child: SizedBox(
         height: 60,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween, // Menggunakan spaceBetween
           children: [
-            _navItem(context, Icons.home_outlined, 'Beranda'),
-            _navItem(context, FontAwesomeIcons.mosque, 'Jadwal Sholat'),
-            const SizedBox(width: 40), 
-            _navItem(context, Icons.chat_outlined, 'Pesan'),
-            _navItem(context, Icons.person_outline, 'Profil'),
+            Expanded(child: _navItem(context, Icons.home_outlined, 'Beranda')),
+            Expanded(child: _navItem(context, FontAwesomeIcons.mosque, 'Jadwal Sholat')),
+            const SizedBox(width: 80), // Jarak disesuaikan dengan besar tombol QRIS
+            Expanded(child: _navItem(context, Icons.chat_outlined, 'Pesan')),
+            Expanded(child: _navItem(context, Icons.person_outline, 'Profil')),
           ],
         ),
       ),
