@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'dart:async'; // Wulan tambahkan ini untuk fitur waktu berjalan
+import 'dart:async'; 
 
 void main() {
   runApp(const BSIApp());
@@ -15,7 +15,7 @@ class BSIApp extends StatelessWidget {
       title: 'Tugas UTS Sofyan',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF00A39D)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF00A39D)), // Toska BSI
         useMaterial3: true,
       ),
       home: const HomeScreen(),
@@ -30,16 +30,15 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      drawer: _buildSideDrawer(),
       appBar: _buildAppBar(context), 
       body: SingleChildScrollView(
         child: Column(
           children: [
             _buildSearchBar(),
-            _buildGreeting(), // Wulan sudah rombak bagian ini jadi Real-time
+            _buildGreeting(), 
             _buildMainBanner(context),
             _buildMiniBanners(context),
-            _buildMenuGrid(context),
+            _buildMenuGrid(context), 
             const SizedBox(height: 50),
           ],
         ),
@@ -50,72 +49,108 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // --- DRAWER (PANEL SAMPING) ---
-  Widget _buildSideDrawer() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+  // --- FUNGSI BANTUAN UNTUK MEMBUAT DAFTAR MENU DROPDOWN ---
+  PopupMenuItem<String> _buildPopupMenuItem(String value, IconData icon, String text, {bool isSelected = false}) {
+    return PopupMenuItem<String>(
+      value: value,
+      height: 45, 
+      child: Row(
         children: [
-          const UserAccountsDrawerHeader(
-            decoration: BoxDecoration(color: Color(0xFF00A39D)),
-            accountName: Text("Sofyan Ibnu Ghazali", style: TextStyle(fontWeight: FontWeight.bold)),
-            accountEmail: Text("Mahasiswa Teknik Informatika UIM"),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Icon(Icons.person, color: Color(0xFF00A39D), size: 40),
+          Icon(icon, color: const Color(0xFF00A39D), size: 20),
+          const SizedBox(width: 15),
+          Text(
+            text,
+            style: TextStyle(
+              color: isSelected ? const Color(0xFF00A39D) : Colors.black87,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              fontSize: 13,
             ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings, color: Colors.grey),
-            title: const Text('Pengaturan'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.help_outline, color: Colors.grey),
-            title: const Text('Pusat Bantuan'),
-            onTap: () {},
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text('Keluar', style: TextStyle(color: Colors.red)),
-            onTap: () {},
           ),
         ],
       ),
     );
   }
 
-  // 1. HEADER & APPBAR
+  // 1. HEADER & APPBAR (Logo Diperbesar)
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      leading: Builder(
-        builder: (context) {
-          return IconButton(
-            icon: const Icon(Icons.menu, color: Color(0xFF00A39D)),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
+      leading: PopupMenuButton<String>(
+        icon: const Icon(Icons.menu, color: Color(0xFF00A39D)), 
+        
+        offset: const Offset(-15, 45),
+        color: Colors.white, 
+        surfaceTintColor: Colors.white, 
+        elevation: 6, 
+        constraints: const BoxConstraints(
+          minWidth: 260, 
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(12), 
+            bottomLeft: Radius.circular(12)
+          )
+        ),
+
+        onSelected: (String value) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Menu $value dipilih (Fungsi Replika)')),
           );
-        }
+        },
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+          _buildPopupMenuItem('Beranda', Icons.home_outlined, 'Beranda', isSelected: true),
+          _buildPopupMenuItem('Info Rekening', Icons.account_balance_wallet_outlined, 'Info Rekening'),
+          _buildPopupMenuItem('Transfer', Icons.swap_horiz_outlined, 'Transfer'),
+          _buildPopupMenuItem('Pembayaran', Icons.payments_outlined, 'Pembayaran'),
+          _buildPopupMenuItem('Pembelian', Icons.shopping_cart_outlined, 'Pembelian'),
+          _buildPopupMenuItem('QRIS', Icons.qr_code_scanner_outlined, 'QRIS'),
+          _buildPopupMenuItem('Buka Rekening', Icons.person_add_outlined, 'Buka Rekening'),
+          _buildPopupMenuItem('Kotak Masuk', Icons.mail_outline, 'Kotak Masuk'),
+          _buildPopupMenuItem('Manajemen Kartu', Icons.credit_card_outlined, 'Manajemen Kartu'),
+          _buildPopupMenuItem('Info Kurs', Icons.show_chart, 'Info Kurs dan Emas'),
+          _buildPopupMenuItem('Informasi Limit', Icons.insert_chart_outlined, 'Informasi Limit'),
+          _buildPopupMenuItem('Keyboard', Icons.keyboard_outlined, 'Keyboard'),
+          const PopupMenuDivider(), 
+          _buildPopupMenuItem('Aktivasi', Icons.check_box_outlined, 'Aktivasi'),
+          _buildPopupMenuItem('Minta Kode', Icons.sync, 'Minta Kode Aktivasi Ulang'),
+          _buildPopupMenuItem('Sandi', Icons.lock_outline, 'Pengaturan Kata Sandi'),
+          _buildPopupMenuItem('Pin', Icons.edit_outlined, 'Ubah Pin'),
+          _buildPopupMenuItem('Bahasa', Icons.g_translate, 'Ubah Bahasa'),
+          _buildPopupMenuItem('Email', Icons.email_outlined, 'Email'),
+          _buildPopupMenuItem('Tentang', Icons.info_outline, 'Tentang Aplikasi'),
+        ],
       ),
+      titleSpacing: 0,
       title: Row(
         children: [
-          const Text(
-            'BSI',
-            style: TextStyle(
-                color: Color(0xFF00A39D),
-                fontWeight: FontWeight.bold,
-                fontSize: 22),
+          // --- LOGO BSI DENGAN TEKS DIPERBESAR ---
+          Stack(
+            clipBehavior: Clip.none, 
+            children: [
+              const Text(
+                'BSI',
+                style: TextStyle(
+                    color: Color(0xFF00A39D),
+                    fontWeight: FontWeight.w900, 
+                    fontSize: 32), // Ukuran BSI dibesarkan
+              ),
+              Positioned(
+                top: 2,
+                right: -10, // Menyesuaikan posisi bintang karena font membesar
+                child: const Icon(Icons.star, color: Color(0xFFF8A83A), size: 12), // Bintang sedikit dibesarkan
+              ),
+            ],
           ),
-          const SizedBox(width: 4),
+          
+          const SizedBox(width: 10), // Jarak sedikit dilebarkan agar seimbang
+          
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
-              Text('BANK SYARIAH', style: TextStyle(color: Color(0xFF00A39D), fontSize: 8)),
-              Text('INDONESIA', style: TextStyle(color: Color(0xFF00A39D), fontSize: 8)),
+              // Teks BANK SYARIAH INDONESIA dibesarkan menjadi ukuran 12
+              Text('BANK SYARIAH', style: TextStyle(color: Color(0xFF00A39D), fontSize: 12, fontWeight: FontWeight.normal, height: 1.0)),
+              Text('INDONESIA', style: TextStyle(color: Color(0xFF00A39D), fontSize: 12, fontWeight: FontWeight.normal, height: 1.0)),
             ],
           )
         ],
@@ -124,19 +159,13 @@ class HomeScreen extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.mail_outline, color: Color(0xFF00A39D)),
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Kotak Masuk', style: TextStyle(color: Color(0xFF00A39D))),
-                content: const Text('Belum ada pesan baru untuk Sofyan hari ini.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Tutup', style: TextStyle(color: Color(0xFF00A39D))),
-                  ),
-                ],
-              ),
-            );
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pesan dibuka')));
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.qr_code_scanner, color: Color(0xFF00A39D), size: 20),
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Scan QR dibuka')));
           },
         ),
         Stack(
@@ -145,19 +174,7 @@ class HomeScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.notifications_none, color: Color(0xFF00A39D)),
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Notifikasi', style: TextStyle(color: Color(0xFF00A39D))),
-                    content: const Text('Tidak ada pemberitahuan sistem yang baru.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Tutup', style: TextStyle(color: Color(0xFF00A39D))),
-                      ),
-                    ],
-                  ),
-                );
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Notifikasi dibuka')));
               },
             ),
             Positioned(
@@ -191,7 +208,7 @@ class HomeScreen extends StatelessWidget {
         child: const TextField(
           decoration: InputDecoration(
             icon: Icon(Icons.search, color: Colors.grey),
-            hintText: 'Cari menu, fitur baru',
+            hintText: 'Cari promo, fitur baru',
             hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
             border: InputBorder.none,
           ),
@@ -200,7 +217,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 3. NAMA & WAKTU REAL-TIME (Sudah Wulan perbaiki)
+  // 3. NAMA & WAKTU REAL-TIME 
   Widget _buildGreeting() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -214,12 +231,10 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
             const SizedBox(height: 4),
-            // Menggunakan StreamBuilder agar jamnya terus berjalan otomatis
             StreamBuilder(
               stream: Stream.periodic(const Duration(seconds: 1)),
               builder: (context, snapshot) {
                 final now = DateTime.now();
-                // Array manual agar Sofyan tidak perlu nambah package intl
                 final days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                 final months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
 
@@ -228,13 +243,15 @@ class HomeScreen extends StatelessWidget {
                 final monthName = months[now.month - 1];
                 final year = now.year;
                 
-                // Memastikan angka jam dan menit selalu 2 digit (misal 07:05 bukan 7:5)
                 final hour = now.hour.toString().padLeft(2, '0');
                 final minute = now.minute.toString().padLeft(2, '0');
 
                 return Text(
                   "$dayName, $day $monthName $year • $hour:$minute WIB",
-                  style: const TextStyle(color: Color(0xFF00A39D), fontSize: 12),
+                  style: const TextStyle(
+                    color: Color(0xFF00A39D), 
+                    fontSize: 12
+                  ),
                 );
               },
             ),
@@ -325,7 +342,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                 mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Icon(Icons.storefront, color: Colors.white, size: 16),
                     SizedBox(width: 5),
@@ -351,14 +368,14 @@ class HomeScreen extends StatelessWidget {
       {'title': 'Berbagi - Ziswaf', 'icon': FontAwesomeIcons.handHoldingHeart},
       {'title': 'e-mas', 'icon': Icons.monetization_on_outlined},
       {'title': 'Favorit', 'icon': Icons.star_border_outlined},
-      {'title': 'Tarik Tunai', 'icon': Icons.atm_outlined},
+      {'title': 'Tarik Tunai', 'icon': Icons.cloud_download_outlined}, 
       {'title': 'Buka Rekening', 'icon': Icons.person_add_outlined},
       {'title': 'Top Up eWallet', 'icon': Icons.account_balance_outlined},
       {'title': 'E-Commerce', 'icon': Icons.shopping_bag_outlined},
     ];
 
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -366,8 +383,8 @@ class HomeScreen extends StatelessWidget {
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
           mainAxisSpacing: 15,
-          crossAxisSpacing: 15,
-          childAspectRatio: 0.72,
+          crossAxisSpacing: 10,
+          childAspectRatio: 0.8, 
         ),
         itemBuilder: (context, index) {
           return InkWell(
@@ -388,26 +405,26 @@ class HomeScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white, 
+                        borderRadius: BorderRadius.circular(12), 
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
+                            color: Colors.grey.withOpacity(0.15),
                             spreadRadius: 1,
-                            blurRadius: 3,
+                            blurRadius: 5,
                           )
                         ]
                       ),
-                      child: Icon(menus[index]['icon'] as IconData, color: const Color(0xFF00A39D), size: 28),
+                      child: Icon(menus[index]['icon'] as IconData, color: const Color(0xFF00A39D), size: 30), 
                     ),
                     Positioned(
-                      bottom: 0,
-                      right: 0,
+                      bottom: 4,
+                      right: 4,
                       child: Container(
-                        width: 12,
-                        height: 12,
+                        width: 10,
+                        height: 10,
                         decoration: const BoxDecoration(
-                          color: Color(0xFFF8A83A),
+                          color: Color(0xFFF8A83A), 
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -418,7 +435,7 @@ class HomeScreen extends StatelessWidget {
                 Text(
                   menus[index]['title'] as String,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 10, color: Colors.black87, fontWeight: FontWeight.w600),
+                  style: const TextStyle(fontSize: 10, color: Colors.black87, fontWeight: FontWeight.w600), 
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -439,7 +456,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: const Color(0xFF00A39D),
         elevation: 4,
         onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('QRIS diklik!')));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Halaman QRIS akan terbuka')));
         },
         shape: const CircleBorder(
           side: BorderSide(color: Colors.white, width: 3),
@@ -449,7 +466,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 8. NAVIGASI BAWAH 
+  // 8. NAVIGASI BAWAH
   Widget _buildBottomNav(BuildContext context) {
     return BottomAppBar(
       color: const Color(0xFFF8A83A),
@@ -463,7 +480,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             _navItem(context, Icons.home_outlined, 'Beranda'),
             _navItem(context, FontAwesomeIcons.mosque, 'Jadwal Sholat'),
-            const SizedBox(width: 40),
+            const SizedBox(width: 40), 
             _navItem(context, Icons.chat_outlined, 'Pesan'),
             _navItem(context, Icons.person_outline, 'Profil'),
           ],
@@ -477,7 +494,7 @@ class HomeScreen extends StatelessWidget {
       onTap: () {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('$label diklik!'),
+            content: Text('Halaman $label akan terbuka'),
             duration: const Duration(milliseconds: 800),
           ),
         );
