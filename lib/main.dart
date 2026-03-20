@@ -15,7 +15,7 @@ class BSIApp extends StatelessWidget {
       title: 'Tugas UTS Sofyan',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF00A39D)), // Toska BSI
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF00A39D)), 
         useMaterial3: true,
       ),
       home: const HomeScreen(),
@@ -44,11 +44,7 @@ class HomeScreen extends StatelessWidget {
             _buildPromoSection(context),
             
             _buildIslamicInspiration(context),
-            
-            // --- INI TAMBAHAN BARU DARI WULAN ---
             _buildHelpCenterNote(),
-            // ------------------------------------
-            
             _buildSecurityNote(),
             
             const SizedBox(height: 80), 
@@ -106,8 +102,9 @@ class HomeScreen extends StatelessWidget {
         ),
 
         onSelected: (String value) {
+          // Menggunakan SnackBar bawaan asli Flutter
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Menu $value dipilih')),
+            SnackBar(content: Text('Menu Sidebar: $value dipilih')),
           );
         },
         itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -134,56 +131,111 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       titleSpacing: 0,
-      title: Row(
-        children: [
-          Stack(
-            clipBehavior: Clip.none, 
-            children: [
-              const Text(
-                'BSI',
-                style: TextStyle(
-                    color: Color(0xFF00A39D),
-                    fontWeight: FontWeight.w900, 
-                    fontSize: 32), 
-              ),
-              Positioned(
-                top: 2,
-                right: -10, 
-                child: const Icon(Icons.star, color: Color(0xFFF8A83A), size: 12), 
-              ),
-            ],
-          ),
-          
-          const SizedBox(width: 10), 
-          
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text('BANK SYARIAH', style: TextStyle(color: Color(0xFF00A39D), fontSize: 12, fontWeight: FontWeight.normal, height: 1.0)),
-              Text('INDONESIA', style: TextStyle(color: Color(0xFF00A39D), fontSize: 12, fontWeight: FontWeight.normal, height: 1.0)),
-            ],
-          )
-        ],
+      title: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.centerLeft,
+        child: Row(
+          children: [
+            Stack(
+              clipBehavior: Clip.none, 
+              children: [
+                const Text(
+                  'BSI',
+                  style: TextStyle(
+                      color: Color(0xFF00A39D),
+                      fontWeight: FontWeight.w900, 
+                      fontSize: 28), 
+                ),
+                Positioned(
+                  top: 2,
+                  right: -10, 
+                  child: const Icon(Icons.star, color: Color(0xFFF8A83A), size: 10), 
+                ),
+              ],
+            ),
+            
+            const SizedBox(width: 8), 
+            
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text('BANK SYARIAH', style: TextStyle(color: Color(0xFF00A39D), fontSize: 10, fontWeight: FontWeight.bold, height: 1.0)),
+                Text('INDONESIA', style: TextStyle(color: Color(0xFF00A39D), fontSize: 10, fontWeight: FontWeight.bold, height: 1.0)),
+              ],
+            )
+          ],
+        ),
       ),
       actions: [
+        // --- DIALOG KOTAK MASUK (Tetap dipertahankan) ---
         IconButton(
-          icon: const Icon(Icons.mail_outline, color: Color(0xFF00A39D)),
-          onPressed: () {},
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          constraints: const BoxConstraints(),
+          icon: const Icon(Icons.mail_outline, color: Color(0xFF00A39D), size: 22),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Kotak Masuk', style: TextStyle(color: Color(0xFF00A39D))),
+                content: const Text('Belum ada pesan baru untuk Sofyan hari ini.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Tutup', style: TextStyle(color: Color(0xFF00A39D))),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
+        // --- DIALOG QR BARCODE (Tetap dipertahankan) ---
         IconButton(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          constraints: const BoxConstraints(),
           icon: const Icon(Icons.qr_code_scanner, color: Color(0xFF00A39D), size: 20),
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Scan QR', style: TextStyle(color: Color(0xFF00A39D))),
+                content: const Text('Kamera siap memindai kode QR.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Tutup', style: TextStyle(color: Color(0xFF00A39D))),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
+        // --- DIALOG NOTIFIKASI LONCENG (Tetap dipertahankan) ---
         Stack(
           alignment: Alignment.center,
           children: [
             IconButton(
-              icon: const Icon(Icons.notifications_none, color: Color(0xFF00A39D)),
-              onPressed: () {},
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              constraints: const BoxConstraints(),
+              icon: const Icon(Icons.notifications_none, color: Color(0xFF00A39D), size: 22),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Notifikasi', style: TextStyle(color: Color(0xFF00A39D))),
+                    content: const Text('Tidak ada pemberitahuan sistem yang baru.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Tutup', style: TextStyle(color: Color(0xFF00A39D))),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
             Positioned(
-              top: 12,
-              right: 12,
+              top: 0,
+              right: 4,
               child: Container(
                 width: 8,
                 height: 8,
@@ -194,6 +246,74 @@ class HomeScreen extends StatelessWidget {
               ),
             )
           ],
+        ),
+        // --- DIALOG PROFIL SOFYAN (Tetap dipertahankan) ---
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 15.0),
+          child: GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  title: const Text(
+                    'Profil Pengguna', 
+                    style: TextStyle(color: Color(0xFF00A39D), fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min, 
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(4), 
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF00A39D), 
+                          shape: BoxShape.circle,
+                        ),
+                        child: const CircleAvatar(
+                          radius: 45, 
+                          backgroundColor: Colors.white,
+                          backgroundImage: AssetImage('asset/profil.jpg'), 
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      const Text(
+                        'Sofyan Ibnu Ghazali',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        'Mahasiswa Teknik Informatika UIM',
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    Center(
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Tutup', style: TextStyle(color: Color(0xFF00A39D), fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(2), 
+              decoration: const BoxDecoration(
+                color: Color(0xFF00A39D), 
+                shape: BoxShape.circle,
+              ),
+              child: const CircleAvatar(
+                radius: 14,
+                backgroundColor: Colors.white,
+                backgroundImage: AssetImage('asset/profil.jpg'), 
+              ),
+            ),
+          ),
         ),
       ],
     );
@@ -265,27 +385,36 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 4. BANNER UTAMA 
+  // 4. BANNER UTAMA
   Widget _buildMainBanner(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: InkWell(
-        onTap: () {},
-        child: Container(
-          height: 150,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            image: const DecorationImage(
-              image: NetworkImage('https://i.pinimg.com/736x/70/43/53/7043539b43258b5ae47da7d1b9c0fc50.jpg'), 
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            // Menggunakan SnackBar bawaan asli Flutter
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Banner HARI 9 diklik!')),
+            );
+          },
+          borderRadius: BorderRadius.circular(15),
+          child: Ink(
+            height: 150,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              image: const DecorationImage(
+                image: NetworkImage('https://i.pinimg.com/736x/70/43/53/7043539b43258b5ae47da7d1b9c0fc50.jpg'), 
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
+              ),
             ),
-          ),
-          child: const Center(
-            child: Text(
-              'HARI 9\nTetap Istiqomah',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+            child: const Center(
+              child: Text(
+                'HARI 9\nTetap Istiqomah',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+              ),
             ),
           ),
         ),
@@ -300,52 +429,68 @@ class HomeScreen extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: InkWell(
-              onTap: () {},
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF00A39D),
-                  borderRadius: BorderRadius.circular(10),
-                  image: const DecorationImage(
-                    image: AssetImage('asset/berkah.jpg'),
-                    fit: BoxFit.cover,
-                    colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Banner JadiBerkah diklik!')),
+                  );
+                },
+                borderRadius: BorderRadius.circular(10),
+                child: Ink(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF00A39D),
+                    borderRadius: BorderRadius.circular(10),
+                    image: const DecorationImage(
+                      image: AssetImage('asset/berkah.jpg'),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+                    ),
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.volunteer_activism, color: Colors.white, size: 16),
-                    SizedBox(width: 5),
-                    Text('JadiBerkah.ID', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
-                  ],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.volunteer_activism, color: Colors.white, size: 16),
+                      SizedBox(width: 5),
+                      Text('JadiBerkah.ID', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
           const SizedBox(width: 15),
           Expanded(
-            child: InkWell(
-              onTap: () {},
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.green[600],
-                  borderRadius: BorderRadius.circular(10),
-                  image: const DecorationImage(
-                    image: AssetImage('asset/warteg.jpg'),
-                    fit: BoxFit.cover,
-                    colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Banner Warteg Mobile diklik!')),
+                  );
+                },
+                borderRadius: BorderRadius.circular(10),
+                child: Ink(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.green[600],
+                    borderRadius: BorderRadius.circular(10),
+                    image: const DecorationImage(
+                      image: AssetImage('asset/warteg.jpg'),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+                    ),
                   ),
-                ),
-                child: Row(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.storefront, color: Colors.white, size: 16),
-                    SizedBox(width: 5),
-                    Text('Warteg Mobile', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
-                  ],
+                  child: Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.storefront, color: Colors.white, size: 16),
+                      SizedBox(width: 5),
+                      Text('Warteg Mobile', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -385,52 +530,61 @@ class HomeScreen extends StatelessWidget {
           childAspectRatio: 0.8, 
         ),
         itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () {},
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white, 
-                        borderRadius: BorderRadius.circular(12), 
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.15),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                          )
-                        ]
-                      ),
-                      child: Icon(menus[index]['icon'] as IconData, color: const Color(0xFF00A39D), size: 30), 
-                    ),
-                    Positioned(
-                      bottom: 4,
-                      right: 4,
-                      child: Container(
-                        width: 10,
-                        height: 10,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFF8A83A), 
-                          shape: BoxShape.circle,
+          return Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                // Menggunakan SnackBar bawaan asli Flutter
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Menu ${menus[index]['title']} ditekan!')),
+                );
+              },
+              borderRadius: BorderRadius.circular(12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Ink(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white, 
+                          borderRadius: BorderRadius.circular(12), 
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.15),
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                            )
+                          ]
                         ),
+                        child: Icon(menus[index]['icon'] as IconData, color: const Color(0xFF00A39D), size: 30), 
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  menus[index]['title'] as String,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 10, color: Colors.black87, fontWeight: FontWeight.w600), 
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+                      Positioned(
+                        bottom: 4,
+                        right: 4,
+                        child: Container(
+                          width: 10,
+                          height: 10,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF8A83A), 
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    menus[index]['title'] as String,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 10, color: Colors.black87, fontWeight: FontWeight.w600), 
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -438,53 +592,61 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // WIDGET BARU: Info Harga Emas (e-mas)
+  // WIDGET BARU: Info Harga Emas
   Widget _buildGoldInfoCard(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      child: InkWell(
-        onTap: () {},
-        child: Container(
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.15),
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: const Offset(0, 2),
-              ),
-            ],
-            border: Border.all(color: Colors.grey.withOpacity(0.1)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFE8F5F5),
-                      borderRadius: BorderRadius.circular(10),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Menu Info Harga Emas (e-mas) dibuka!')),
+            );
+          },
+          borderRadius: BorderRadius.circular(15),
+          child: Ink(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.15),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+              border: Border.all(color: Colors.grey.withOpacity(0.1)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE8F5F5),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(Icons.monetization_on, color: Color(0xFF00A39D), size: 24),
                     ),
-                    child: const Icon(Icons.monetization_on, color: Color(0xFF00A39D), size: 24),
-                  ),
-                  const SizedBox(width: 15),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text('Info Harga Emas (e-mas)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black87)),
-                      SizedBox(height: 4),
-                      Text('Harga Beli: Rp 1.150.000 / gram', style: TextStyle(fontSize: 11, color: Colors.grey)),
-                    ],
-                  ),
-                ],
-              ),
-              const Icon(Icons.chevron_right, color: Colors.grey),
-            ],
+                    const SizedBox(width: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text('Info Harga Emas (e-mas)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black87)),
+                        SizedBox(height: 4),
+                        Text('Harga Beli: Rp 1.150.000 / gram', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                      ],
+                    ),
+                  ],
+                ),
+                const Icon(Icons.chevron_right, color: Colors.grey),
+              ],
+            ),
           ),
         ),
       ),
@@ -521,6 +683,39 @@ class HomeScreen extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _promoCard(BuildContext context, String title, String subtitle, Color color, IconData icon) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Melihat detail $title')),
+          );
+        },
+        borderRadius: BorderRadius.circular(15),
+        child: Ink(
+          width: 220,
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: const Color(0xFF00A39D), size: 28),
+              const SizedBox(height: 10),
+              Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black87)),
+              const SizedBox(height: 4),
+              Text(subtitle, style: const TextStyle(fontSize: 10, color: Colors.black54)),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -610,7 +805,11 @@ class HomeScreen extends StatelessWidget {
       child: FloatingActionButton(
         backgroundColor: const Color(0xFF00A39D),
         elevation: 4,
-        onPressed: () {},
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Membuka Kamera QRIS...')),
+          );
+        },
         shape: const CircleBorder(
           side: BorderSide(color: Colors.white, width: 3),
         ),
@@ -644,7 +843,11 @@ class HomeScreen extends StatelessWidget {
 
   Widget _navItem(BuildContext context, IconData icon, String label) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Halaman $label dibuka!')),
+        );
+      },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
