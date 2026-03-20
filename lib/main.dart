@@ -29,7 +29,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // Wulan tambahkan context di sini agar ikon di atas bisa memunculkan pesan
+      // Wulan tambahkan fitur Drawer (Panel Samping) di sini
+      drawer: _buildSideDrawer(),
       appBar: _buildAppBar(context), 
       body: SingleChildScrollView(
         child: Column(
@@ -49,17 +50,58 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 1. HEADER & APPBAR (Wulan fungsikan ikonnya di sini)
+  // --- WULAN TAMBAHKAN DESAIN DRAWER (PANEL SAMPING) ---
+  Widget _buildSideDrawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const UserAccountsDrawerHeader(
+            decoration: BoxDecoration(color: Color(0xFF00A39D)),
+            accountName: Text("Sofyan Ibnu Ghazali", style: TextStyle(fontWeight: FontWeight.bold)),
+            accountEmail: Text("Mahasiswa Teknik Informatika UIM"),
+            currentAccountPicture: CircleAvatar(
+              backgroundColor: Colors.white,
+              child: Icon(Icons.person, color: Color(0xFF00A39D), size: 40),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings, color: Colors.grey),
+            title: const Text('Pengaturan'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: const Icon(Icons.help_outline, color: Colors.grey),
+            title: const Text('Pusat Bantuan'),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.red),
+            title: const Text('Keluar', style: TextStyle(color: Colors.red)),
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 1. HEADER & APPBAR (Wulan sudah fungsikan ikonnya secara nyata)
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      leading: IconButton(
-        icon: const Icon(Icons.menu, color: Color(0xFF00A39D)),
-        onPressed: () {
-          // Fungsi klik Ikon Menu
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Menu Navigasi diklik!')));
-        },
+      // Wulan pakai Builder agar context-nya bisa memanggil Drawer
+      leading: Builder(
+        builder: (context) {
+          return IconButton(
+            icon: const Icon(Icons.menu, color: Color(0xFF00A39D)),
+            onPressed: () {
+              // FUNGSI NYATA: Membuka panel samping
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        }
       ),
       title: Row(
         children: [
@@ -84,8 +126,20 @@ class HomeScreen extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.mail_outline, color: Color(0xFF00A39D)),
           onPressed: () {
-            // Fungsi klik Ikon Surat
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pesan Masuk diklik!')));
+            // FUNGSI NYATA: Membuka Pop-up Pesan
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Kotak Masuk', style: TextStyle(color: Color(0xFF00A39D))),
+                content: const Text('Belum ada pesan baru untuk Sofyan hari ini.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Tutup', style: TextStyle(color: Color(0xFF00A39D))),
+                  ),
+                ],
+              ),
+            );
           },
         ),
         Stack(
@@ -94,8 +148,20 @@ class HomeScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.notifications_none, color: Color(0xFF00A39D)),
               onPressed: () {
-                // Fungsi klik Ikon Lonceng Notifikasi
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Notifikasi diklik!')));
+                // FUNGSI NYATA: Membuka Pop-up Notifikasi
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Notifikasi', style: TextStyle(color: Color(0xFF00A39D))),
+                    content: const Text('Tidak ada pemberitahuan sistem yang baru.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Tutup', style: TextStyle(color: Color(0xFF00A39D))),
+                      ),
+                    ],
+                  ),
+                );
               },
             ),
             Positioned(
@@ -162,7 +228,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 4. BANNER UTAMA (Sudah pakai background gambar)
+  // 4. BANNER UTAMA 
   Widget _buildMainBanner(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -174,11 +240,9 @@ class HomeScreen extends StatelessWidget {
           height: 150,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            // Wulan pasang gambar dari internet di sini. Sofyan bisa ganti link-nya ya.
             image: const DecorationImage(
-              image: NetworkImage('https://i.pinimg.com/1200x/2c/d7/95/2cd79538d2954d6530c1f136b6d7d5a5.jpg'),
+              image: AssetImage('asset/hari9.jpg'), 
               fit: BoxFit.cover,
-              // Efek gelap supaya teks putihnya jelas
               colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
             ),
           ),
@@ -194,7 +258,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 5. BANNER KECIL BAWAH (Sudah pakai background gambar juga)
+  // 5. BANNER KECIL BAWAH 
   Widget _buildMiniBanners(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -208,6 +272,7 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 height: 50,
                 decoration: BoxDecoration(
+                  color: const Color(0xFF00A39D),
                   borderRadius: BorderRadius.circular(10),
                   image: const DecorationImage(
                     image: AssetImage('asset/berkah.jpg'),
@@ -235,6 +300,7 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 height: 50,
                 decoration: BoxDecoration(
+                  color: Colors.green[600],
                   borderRadius: BorderRadius.circular(10),
                   image: const DecorationImage(
                     image: AssetImage('asset/warteg.jpg'),
@@ -258,7 +324,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 6. MENU GRID 12 TOMBOL (Error merah sudah diperbaiki)
+  // 6. MENU GRID 12 TOMBOL 
   Widget _buildMenuGrid(BuildContext context) {
     final menus = [
       {'title': 'Info Rekening', 'icon': Icons.account_balance_wallet_outlined},
@@ -285,7 +351,6 @@ class HomeScreen extends StatelessWidget {
           crossAxisCount: 4,
           mainAxisSpacing: 15,
           crossAxisSpacing: 15,
-          // Wulan ubah rasionya jadi 0.72 supaya teks "Berbagi - Ziswaf" gak kepotong lagi
           childAspectRatio: 0.72,
         ),
         itemBuilder: (context, index) {
@@ -368,7 +433,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 8. NAVIGASI BAWAH WARNA ORANYE (Sudah bisa diklik semua)
+  // 8. NAVIGASI BAWAH 
   Widget _buildBottomNav(BuildContext context) {
     return BottomAppBar(
       color: const Color(0xFFF8A83A),
@@ -392,7 +457,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _navItem(BuildContext context, IconData icon, String label) {
-    // Wulan tambahkan InkWell di sini supaya Sofyan bisa ngeklik ikonnya
     return InkWell(
       onTap: () {
         ScaffoldMessenger.of(context).showSnackBar(
