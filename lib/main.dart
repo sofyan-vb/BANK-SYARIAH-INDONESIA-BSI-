@@ -39,7 +39,19 @@ class HomeScreen extends StatelessWidget {
             _buildMainBanner(context),
             _buildMiniBanners(context),
             _buildMenuGrid(context), 
-            const SizedBox(height: 50),
+            
+            _buildGoldInfoCard(context),
+            _buildPromoSection(context),
+            
+            _buildIslamicInspiration(context),
+            
+            // --- INI TAMBAHAN BARU DARI WULAN ---
+            _buildHelpCenterNote(),
+            // ------------------------------------
+            
+            _buildSecurityNote(),
+            
+            const SizedBox(height: 80), 
           ],
         ),
       ),
@@ -95,7 +107,7 @@ class HomeScreen extends StatelessWidget {
 
         onSelected: (String value) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Menu $value dipilih (Fungsi Replika)')),
+            SnackBar(content: Text('Menu $value dipilih')),
           );
         },
         itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -156,24 +168,18 @@ class HomeScreen extends StatelessWidget {
       actions: [
         IconButton(
           icon: const Icon(Icons.mail_outline, color: Color(0xFF00A39D)),
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pesan dibuka')));
-          },
+          onPressed: () {},
         ),
         IconButton(
           icon: const Icon(Icons.qr_code_scanner, color: Color(0xFF00A39D), size: 20),
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Scan QR dibuka')));
-          },
+          onPressed: () {},
         ),
         Stack(
           alignment: Alignment.center,
           children: [
             IconButton(
               icon: const Icon(Icons.notifications_none, color: Color(0xFF00A39D)),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Notifikasi dibuka')));
-              },
+              onPressed: () {},
             ),
             Positioned(
               top: 12,
@@ -264,9 +270,7 @@ class HomeScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: InkWell(
-        onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Banner Utama diklik!')));
-        },
+        onTap: () {},
         child: Container(
           height: 150,
           decoration: BoxDecoration(
@@ -297,9 +301,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           Expanded(
             child: InkWell(
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('JadiBerkah diklik!')));
-              },
+              onTap: () {},
               child: Container(
                 height: 50,
                 decoration: BoxDecoration(
@@ -325,9 +327,7 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(width: 15),
           Expanded(
             child: InkWell(
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Warteg Mobile diklik!')));
-              },
+              onTap: () {},
               child: Container(
                 height: 50,
                 decoration: BoxDecoration(
@@ -386,14 +386,7 @@ class HomeScreen extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Menu ${menus[index]['title']} diklik!'),
-                  duration: const Duration(milliseconds: 800),
-                ),
-              );
-            },
+            onTap: () {},
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -445,6 +438,170 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  // WIDGET BARU: Info Harga Emas (e-mas)
+  Widget _buildGoldInfoCard(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.15),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(0, 2),
+              ),
+            ],
+            border: Border.all(color: Colors.grey.withOpacity(0.1)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE8F5F5),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.monetization_on, color: Color(0xFF00A39D), size: 24),
+                  ),
+                  const SizedBox(width: 15),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text('Info Harga Emas (e-mas)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black87)),
+                      SizedBox(height: 4),
+                      Text('Harga Beli: Rp 1.150.000 / gram', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                    ],
+                  ),
+                ],
+              ),
+              const Icon(Icons.chevron_right, color: Colors.grey),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // WIDGET BARU: Promo Horizontal Scroll
+  Widget _buildPromoSection(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15, bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              'Promo & Informasi',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black87),
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: 110,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              children: [
+                _promoCard(context, 'Promo Buka Rekening', 'Dapatkan Cashback Rp 50.000', Colors.orange[100]!, Icons.wallet_giftcard),
+                const SizedBox(width: 15),
+                _promoCard(context, 'Diskon QRIS', 'Potongan 20% di Merchant Pilihan', Colors.teal[100]!, Icons.qr_code),
+                const SizedBox(width: 15),
+                _promoCard(context, 'Kajian Islami', 'Jadwal Kajian Masjid Terdekat', Colors.blue[100]!, FontAwesomeIcons.bookQuran),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  // WIDGET TAMBAHAN: Catatan Inspirasi Islami
+  Widget _buildIslamicInspiration(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF0F9F9), 
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: const Color(0xFF00A39D).withOpacity(0.3)),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Icon(FontAwesomeIcons.quoteLeft, color: Color(0xFF00A39D), size: 20),
+            const SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Inspirasi Hari Ini',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF00A39D)),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    '"Perumpamaan orang yang menginfakkan hartanya di jalan Allah seperti sebutir biji yang menumbuhkan tujuh tangkai..."\n(QS. Al-Baqarah: 261)',
+                    style: TextStyle(fontSize: 11, color: Colors.black87, fontStyle: FontStyle.italic, height: 1.3),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // WIDGET TAMBAHAN BARU: Bantuan / Call Center
+  Widget _buildHelpCenterNote() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15, bottom: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(Icons.headset_mic, color: Color(0xFF00A39D), size: 14),
+          SizedBox(width: 5),
+          Text(
+            'Butuh bantuan? Hubungi BSI Call 14040',
+            style: TextStyle(fontSize: 10, color: Color(0xFF00A39D), fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // WIDGET TAMBAHAN: Catatan Keamanan
+  Widget _buildSecurityNote() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(Icons.security, color: Colors.grey, size: 14),
+          SizedBox(width: 5),
+          Expanded(
+            child: Text(
+              'BSI tidak pernah meminta PIN, Kata Sandi, atau OTP Anda. Jaga selalu kerahasiaan data pribadi Anda.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 9, color: Colors.grey),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   // 7. TOMBOL QRIS MELINGKAR
   Widget _buildQRISButton(BuildContext context) {
     return SizedBox(
@@ -453,9 +610,7 @@ class HomeScreen extends StatelessWidget {
       child: FloatingActionButton(
         backgroundColor: const Color(0xFF00A39D),
         elevation: 4,
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Halaman QRIS akan terbuka')));
-        },
+        onPressed: () {},
         shape: const CircleBorder(
           side: BorderSide(color: Colors.white, width: 3),
         ),
@@ -464,7 +619,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 8. NAVIGASI BAWAH (Wulan perbaiki layoutnya biar simetris)
+  // 8. NAVIGASI BAWAH 
   Widget _buildBottomNav(BuildContext context) {
     return BottomAppBar(
       color: const Color(0xFFF8A83A),
@@ -474,11 +629,11 @@ class HomeScreen extends StatelessWidget {
       child: SizedBox(
         height: 60,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, // Menggunakan spaceBetween
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(child: _navItem(context, Icons.home_outlined, 'Beranda')),
             Expanded(child: _navItem(context, FontAwesomeIcons.mosque, 'Jadwal Sholat')),
-            const SizedBox(width: 80), // Jarak disesuaikan dengan besar tombol QRIS
+            const SizedBox(width: 80), 
             Expanded(child: _navItem(context, Icons.chat_outlined, 'Pesan')),
             Expanded(child: _navItem(context, Icons.person_outline, 'Profil')),
           ],
@@ -489,14 +644,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _navItem(BuildContext context, IconData icon, String label) {
     return InkWell(
-      onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Halaman $label akan terbuka'),
-            duration: const Duration(milliseconds: 800),
-          ),
-        );
-      },
+      onTap: () {},
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
