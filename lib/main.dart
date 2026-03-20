@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:async'; // Wulan tambahkan ini untuk fitur waktu berjalan
 
 void main() {
   runApp(const BSIApp());
@@ -29,14 +30,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // Wulan tambahkan fitur Drawer (Panel Samping) di sini
       drawer: _buildSideDrawer(),
       appBar: _buildAppBar(context), 
       body: SingleChildScrollView(
         child: Column(
           children: [
             _buildSearchBar(),
-            _buildGreeting(),
+            _buildGreeting(), // Wulan sudah rombak bagian ini jadi Real-time
             _buildMainBanner(context),
             _buildMiniBanners(context),
             _buildMenuGrid(context),
@@ -50,7 +50,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // --- WULAN TAMBAHKAN DESAIN DRAWER (PANEL SAMPING) ---
+  // --- DRAWER (PANEL SAMPING) ---
   Widget _buildSideDrawer() {
     return Drawer(
       child: ListView(
@@ -86,18 +86,16 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 1. HEADER & APPBAR (Wulan sudah fungsikan ikonnya secara nyata)
+  // 1. HEADER & APPBAR
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      // Wulan pakai Builder agar context-nya bisa memanggil Drawer
       leading: Builder(
         builder: (context) {
           return IconButton(
             icon: const Icon(Icons.menu, color: Color(0xFF00A39D)),
             onPressed: () {
-              // FUNGSI NYATA: Membuka panel samping
               Scaffold.of(context).openDrawer();
             },
           );
@@ -126,7 +124,6 @@ class HomeScreen extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.mail_outline, color: Color(0xFF00A39D)),
           onPressed: () {
-            // FUNGSI NYATA: Membuka Pop-up Pesan
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
@@ -148,7 +145,6 @@ class HomeScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.notifications_none, color: Color(0xFF00A39D)),
               onPressed: () {
-                // FUNGSI NYATA: Membuka Pop-up Notifikasi
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -204,7 +200,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 3. NAMA & LOKASI
+  // 3. NAMA & WAKTU REAL-TIME (Sudah Wulan perbaiki)
   Widget _buildGreeting() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -212,15 +208,35 @@ class HomeScreen extends StatelessWidget {
         alignment: Alignment.centerRight,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
-          children: const [
-            Text(
+          children: [
+            const Text(
               "Assalamu'alaikum, SOFYAN IBNU GHAZALI",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
-            SizedBox(height: 4),
-            Text(
-              "Pamekasan, Ashr 15:12",
-              style: TextStyle(color: Colors.grey, fontSize: 12),
+            const SizedBox(height: 4),
+            // Menggunakan StreamBuilder agar jamnya terus berjalan otomatis
+            StreamBuilder(
+              stream: Stream.periodic(const Duration(seconds: 1)),
+              builder: (context, snapshot) {
+                final now = DateTime.now();
+                // Array manual agar Sofyan tidak perlu nambah package intl
+                final days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                final months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+
+                final dayName = days[now.weekday % 7];
+                final day = now.day;
+                final monthName = months[now.month - 1];
+                final year = now.year;
+                
+                // Memastikan angka jam dan menit selalu 2 digit (misal 07:05 bukan 7:5)
+                final hour = now.hour.toString().padLeft(2, '0');
+                final minute = now.minute.toString().padLeft(2, '0');
+
+                return Text(
+                  "$dayName, $day $monthName $year • $hour:$minute WIB",
+                  style: const TextStyle(color: Color(0xFF00A39D), fontSize: 12),
+                );
+              },
             ),
           ],
         ),
@@ -241,7 +257,7 @@ class HomeScreen extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             image: const DecorationImage(
-              image: AssetImage('asset/hari9.jpg'), 
+              image: NetworkImage('https://i.pinimg.com/736x/70/43/53/7043539b43258b5ae47da7d1b9c0fc50.jpg'), 
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
             ),
