@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:async'; 
+import 'dart:ui'; 
 
 void main() {
   runApp(const BSIApp());
@@ -37,9 +38,7 @@ class HomeScreen extends StatelessWidget {
             _buildSearchBar(),
             _buildGreeting(), 
             
-            // --- KARTU SALDO KEREN & SULTAN ALA WULAN ---
             _buildBalanceCard(),
-            // ---------------------------------------------
             
             _buildMainBanner(context),
             _buildMiniBanners(context),
@@ -47,6 +46,10 @@ class HomeScreen extends StatelessWidget {
             
             _buildGoldInfoCard(context),
             _buildPromoSection(context),
+            
+            // --- INI WIDGET TAMBAHAN BARU DARI WULAN: MUTASI TERAKHIR ---
+            _buildRecentTransactions(context),
+            // -------------------------------------------------------------
             
             _buildIslamicInspiration(context),
             _buildHelpCenterNote(),
@@ -62,7 +65,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // --- FUNGSI BANTUAN UNTUK MEMBUAT DAFTAR MENU DROPDOWN ---
   PopupMenuItem<String> _buildPopupMenuItem(String value, IconData icon, String text, {bool isSelected = false}) {
     return PopupMenuItem<String>(
       value: value,
@@ -84,7 +86,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 1. HEADER & APPBAR 
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
@@ -144,7 +145,7 @@ class HomeScreen extends StatelessWidget {
               clipBehavior: Clip.none, 
               children: [
                 const Text(
-                  'BSI', // Garis kurungan dihilangkan
+                  'BSI', 
                   style: TextStyle(
                       color: Color(0xFF00A39D),
                       fontWeight: FontWeight.w900, 
@@ -319,7 +320,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 2. KOLOM PENCARIAN
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -341,7 +341,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 3. NAMA & WAKTU REAL-TIME 
   Widget _buildGreeting() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -385,7 +384,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // --- KARTU SALDO REKENING KEREN & ELEGAN ALA WULAN ---
   Widget _buildBalanceCard() {
     bool isHidden = true; 
     return Padding(
@@ -393,81 +391,149 @@ class HomeScreen extends StatelessWidget {
       child: StatefulBuilder(
         builder: (context, setState) {
           return Container(
-            padding: const EdgeInsets.all(20),
+            height: 195, 
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFF00A39D), Color(0xFF00857D)], 
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
               borderRadius: BorderRadius.circular(20), 
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF00A39D).withOpacity(0.4),
+                  color: const Color(0xFF00A39D).withOpacity(0.2), 
                   spreadRadius: 2,
-                  blurRadius: 10,
-                  offset: const Offset(0, 5),
+                  blurRadius: 15,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: const Text('Easy Wadiah', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Stack(
+                children: [
+                  BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(0xFF00A39D).withOpacity(0.5), 
+                            const Color(0xFF007570).withOpacity(0.3),
+                          ], 
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                        const SizedBox(width: 8),
-                        const Text('7123456789', style: TextStyle(color: Colors.white, fontSize: 12, letterSpacing: 1.5)),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isHidden = !isHidden;
-                        });
-                      },
-                      child: Icon(
-                        isHidden ? Icons.visibility_off : Icons.visibility,
-                        color: Colors.white,
-                        size: 20,
+                        borderRadius: BorderRadius.circular(20), 
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.4), 
+                          width: 1.5,
+                        ),
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                const Text('Total Saldo', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                const SizedBox(height: 4),
-                Text(
-                  isHidden ? 'Rp ••••••••••••' : 'Rp 245.500.000',
-                  style: const TextStyle(
-                    color: Colors.white, 
-                    fontSize: 24, 
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.0
                   ),
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  children: [
-                    const Icon(Icons.person_outline, color: Colors.white70, size: 16),
-                    const SizedBox(width: 6),
-                    const Text(
-                      'SOFYAN IBNU GHAZALI', 
-                      style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600)
+                  
+                  Positioned(
+                    right: -40,
+                    top: -40,
+                    child: CircleAvatar(
+                      radius: 80,
+                      backgroundColor: Colors.white.withOpacity(0.08),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  Positioned(
+                    right: 60,
+                    bottom: -50,
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.white.withOpacity(0.08),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.memory, color: Colors.amberAccent.shade100, size: 30),
+                                const SizedBox(width: 8),
+                                Transform.rotate(
+                                  angle: 1.57, 
+                                  child: const Icon(Icons.wifi, color: Colors.white70, size: 24),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(20), 
+                                border: Border.all(color: Colors.white.withOpacity(0.5)),
+                              ),
+                              child: const Text('Easy Wadiah', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
+                            ),
+                          ],
+                        ),
+                        
+                        const Spacer(), 
+                        
+                        const Text('Total Saldo', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                        const SizedBox(height: 2),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              isHidden ? 'Rp ••••••••••••' : 'Rp 245.500.000',
+                              style: const TextStyle(
+                                color: Colors.white, 
+                                fontSize: 26, 
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.0
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isHidden = !isHidden;
+                                });
+                              },
+                              child: Icon(
+                                isHidden ? Icons.visibility_off : Icons.visibility,
+                                color: Colors.white,
+                                size: 22,
+                              ),
+                            ),
+                          ],
+                        ),
+                        
+                        const SizedBox(height: 12),
+                        
+                        Row(
+                          children: [
+                            const Text('7123 4567 89', style: TextStyle(color: Colors.white, fontSize: 14, letterSpacing: 2.0, fontWeight: FontWeight.w500)),
+                            const SizedBox(width: 15),
+                            const Text('Valid\nThru', style: TextStyle(color: Colors.white70, fontSize: 8, height: 1.2)),
+                            const SizedBox(width: 4),
+                            const Text('12/28', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                            
+                            const Spacer(),
+                            
+                            const Text(
+                              'GPN', 
+                              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        const Text(
+                          'SOFYAN IBNU GHAZALI', 
+                          style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1.0)
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -475,7 +541,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 4. BANNER UTAMA
   Widget _buildMainBanner(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -511,7 +576,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 5. BANNER KECIL BAWAH 
   Widget _buildMiniBanners(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -589,7 +653,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 6. MENU GRID 12 TOMBOL 
   Widget _buildMenuGrid(BuildContext context) {
     final menus = [
       {'title': 'Info Rekening', 'icon': Icons.account_balance_wallet_outlined},
@@ -680,7 +743,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // WIDGET BARU: Info Harga Emas
   Widget _buildGoldInfoCard(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -741,7 +803,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // WIDGET BARU: Promo Horizontal Scroll
   Widget _buildPromoSection(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 15, bottom: 10),
@@ -808,7 +869,85 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // WIDGET TAMBAHAN: Catatan Inspirasi Islami
+  // --- WIDGET TAMBAHAN BARU: Mutasi Terakhir ---
+  Widget _buildRecentTransactions(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Mutasi Terakhir',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black87),
+              ),
+              InkWell(
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Melihat semua mutasi transaksi')),
+                  );
+                },
+                child: const Text(
+                  'Lihat Semua',
+                  style: TextStyle(fontSize: 12, color: Color(0xFF00A39D), fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.15),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+              border: Border.all(color: Colors.grey.withOpacity(0.1)),
+            ),
+            child: Column(
+              children: [
+                _transactionItem(context, Icons.swap_calls, 'Transfer Keluar', '19 Mar 2026', '- Rp 150.000', Colors.red),
+                const Divider(height: 1, indent: 15, endIndent: 15, color: Colors.black12),
+                _transactionItem(context, Icons.account_balance_wallet, 'Top Up e-Wallet', '18 Mar 2026', '- Rp 50.000', Colors.red),
+                const Divider(height: 1, indent: 15, endIndent: 15, color: Colors.black12),
+                _transactionItem(context, Icons.arrow_downward, 'Transfer Masuk', '15 Mar 2026', '+ Rp 1.500.000', Colors.green),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _transactionItem(BuildContext context, IconData icon, String title, String date, String amount, Color amountColor) {
+    return ListTile(
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Detail transaksi: $title')),
+        );
+      },
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: const Color(0xFFE8F5F5),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(icon, color: const Color(0xFF00A39D), size: 20),
+      ),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black87)),
+      subtitle: Text(date, style: const TextStyle(fontSize: 10, color: Colors.grey)),
+      trailing: Text(amount, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: amountColor)),
+    );
+  }
+  // -------------------------------------------------------------
+
   Widget _buildIslamicInspiration(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -846,7 +985,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // WIDGET TAMBAHAN BARU: Bantuan / Call Center
   Widget _buildHelpCenterNote() {
     return Padding(
       padding: const EdgeInsets.only(top: 15, bottom: 5),
@@ -864,7 +1002,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // WIDGET TAMBAHAN: Catatan Keamanan
   Widget _buildSecurityNote() {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 20),
@@ -885,7 +1022,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 7. TOMBOL QRIS MELINGKAR
   Widget _buildQRISButton(BuildContext context) {
     return SizedBox(
       height: 75,
@@ -901,12 +1037,18 @@ class HomeScreen extends StatelessWidget {
         shape: const CircleBorder(
           side: BorderSide(color: Colors.white, width: 3),
         ),
-        child: const Text('QRIS', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Icon(Icons.qr_code_scanner, color: Colors.white, size: 28),
+            SizedBox(height: 2),
+            Text('QRIS', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white)),
+          ],
+        ),
       ),
     );
   }
 
-  // 8. NAVIGASI BAWAH 
   Widget _buildBottomNav(BuildContext context) {
     return BottomAppBar(
       color: const Color(0xFFF8A83A),
