@@ -47,8 +47,10 @@ class HomeScreen extends StatelessWidget {
             _buildGoldInfoCard(context),
             _buildPromoSection(context),
             
-            // --- INI WIDGET TAMBAHAN BARU DARI WULAN: MUTASI TERAKHIR ---
             _buildRecentTransactions(context),
+            
+            // --- INI FITUR BARU TAMBAHAN DARI WULAN: LOKASI ATM/CABANG ---
+            _buildBranchAtmLocator(context),
             // -------------------------------------------------------------
             
             _buildIslamicInspiration(context),
@@ -869,7 +871,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // --- WIDGET TAMBAHAN BARU: Mutasi Terakhir ---
   Widget _buildRecentTransactions(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -946,7 +947,104 @@ class HomeScreen extends StatelessWidget {
       trailing: Text(amount, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: amountColor)),
     );
   }
-  // -------------------------------------------------------------
+
+  // WIDGET TAMBAHAN BARU: Lokasi Cabang & ATM (Biar relate sama kampus Sofyan)
+  Widget _buildBranchAtmLocator(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Lokasi Cabang & ATM',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black87),
+              ),
+              InkWell(
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Membuka Peta Lokasi')),
+                  );
+                },
+                child: const Text(
+                  'Lihat Peta',
+                  style: TextStyle(fontSize: 12, color: Color(0xFF00A39D), fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: 70,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                _locationCard(context, Icons.account_balance, 'KCP Pamekasan', '1.2 km'),
+                const SizedBox(width: 15),
+                _locationCard(context, Icons.atm, 'ATM BSI UIM', '0.1 km'), // Spesial buat Sofyan!
+                const SizedBox(width: 15),
+                _locationCard(context, Icons.atm, 'ATM Area Alun-alun', '2.5 km'),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _locationCard(BuildContext context, IconData icon, String title, String distance) {
+    return InkWell(
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Membuka rute ke $title')),
+        );
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        width: 165,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.15),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            )
+          ],
+          border: Border.all(color: Colors.grey.withOpacity(0.1)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFE8F5F5),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(icon, color: const Color(0xFF00A39D), size: 18),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11, color: Colors.black87), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  const SizedBox(height: 4),
+                  Text(distance, style: const TextStyle(fontSize: 10, color: Colors.grey)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildIslamicInspiration(BuildContext context) {
     return Padding(
