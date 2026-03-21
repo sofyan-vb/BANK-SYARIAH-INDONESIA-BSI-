@@ -36,6 +36,11 @@ class HomeScreen extends StatelessWidget {
           children: [
             _buildSearchBar(),
             _buildGreeting(), 
+            
+            // --- KARTU SALDO KEREN & SULTAN ALA WULAN ---
+            _buildBalanceCard(),
+            // ---------------------------------------------
+            
             _buildMainBanner(context),
             _buildMiniBanners(context),
             _buildMenuGrid(context), 
@@ -102,7 +107,6 @@ class HomeScreen extends StatelessWidget {
         ),
 
         onSelected: (String value) {
-          // Menggunakan SnackBar bawaan asli Flutter
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Menu Sidebar: $value dipilih')),
           );
@@ -140,15 +144,15 @@ class HomeScreen extends StatelessWidget {
               clipBehavior: Clip.none, 
               children: [
                 const Text(
-                  'BSI',
+                  'BSI', // Garis kurungan dihilangkan
                   style: TextStyle(
                       color: Color(0xFF00A39D),
                       fontWeight: FontWeight.w900, 
                       fontSize: 28), 
                 ),
                 Positioned(
-                  top: 2,
-                  right: -10, 
+                  top: -4, 
+                  right: -2, 
                   child: const Icon(Icons.star, color: Color(0xFFF8A83A), size: 10), 
                 ),
               ],
@@ -167,7 +171,6 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       actions: [
-        // --- DIALOG KOTAK MASUK (Tetap dipertahankan) ---
         IconButton(
           padding: const EdgeInsets.symmetric(horizontal: 4),
           constraints: const BoxConstraints(),
@@ -188,7 +191,6 @@ class HomeScreen extends StatelessWidget {
             );
           },
         ),
-        // --- DIALOG QR BARCODE (Tetap dipertahankan) ---
         IconButton(
           padding: const EdgeInsets.symmetric(horizontal: 4),
           constraints: const BoxConstraints(),
@@ -209,7 +211,6 @@ class HomeScreen extends StatelessWidget {
             );
           },
         ),
-        // --- DIALOG NOTIFIKASI LONCENG (Tetap dipertahankan) ---
         Stack(
           alignment: Alignment.center,
           children: [
@@ -247,7 +248,6 @@ class HomeScreen extends StatelessWidget {
             )
           ],
         ),
-        // --- DIALOG PROFIL SOFYAN (Tetap dipertahankan) ---
         Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 15.0),
           child: GestureDetector(
@@ -385,6 +385,96 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  // --- KARTU SALDO REKENING KEREN & ELEGAN ALA WULAN ---
+  Widget _buildBalanceCard() {
+    bool isHidden = true; 
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: StatefulBuilder(
+        builder: (context, setState) {
+          return Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF00A39D), Color(0xFF00857D)], 
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(20), 
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF00A39D).withOpacity(0.4),
+                  spreadRadius: 2,
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Text('Easy Wadiah', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+                        ),
+                        const SizedBox(width: 8),
+                        const Text('7123456789', style: TextStyle(color: Colors.white, fontSize: 12, letterSpacing: 1.5)),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isHidden = !isHidden;
+                        });
+                      },
+                      child: Icon(
+                        isHidden ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 15),
+                const Text('Total Saldo', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                const SizedBox(height: 4),
+                Text(
+                  isHidden ? 'Rp ••••••••••••' : 'Rp 245.500.000',
+                  style: const TextStyle(
+                    color: Colors.white, 
+                    fontSize: 24, 
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.0
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  children: [
+                    const Icon(Icons.person_outline, color: Colors.white70, size: 16),
+                    const SizedBox(width: 6),
+                    const Text(
+                      'SOFYAN IBNU GHAZALI', 
+                      style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600)
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   // 4. BANNER UTAMA
   Widget _buildMainBanner(BuildContext context) {
     return Padding(
@@ -393,7 +483,6 @@ class HomeScreen extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            // Menggunakan SnackBar bawaan asli Flutter
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Banner HARI 9 diklik!')),
             );
@@ -534,7 +623,6 @@ class HomeScreen extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: () {
-                // Menggunakan SnackBar bawaan asli Flutter
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Menu ${menus[index]['title']} ditekan!')),
                 );
