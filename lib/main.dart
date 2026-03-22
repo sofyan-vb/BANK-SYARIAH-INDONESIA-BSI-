@@ -47,15 +47,16 @@ class HomeScreen extends StatelessWidget {
 
             _buildMenuGrid(context), 
             
+            // --- INI FITUR PENGGANTI DARI WULAN: TAGIHAN BULANAN ---
+            _buildFavoriteBills(context),
+            // -------------------------------------------------------
+
             _buildGoldInfoCard(context),
             _buildPromoSection(context),
             
             _buildRecentTransactions(context),
             _buildBranchAtmLocator(context),
-            
-            // --- INI FITUR BARU PENGGANTI DARI WULAN: CATATAN KEUANGAN ---
             _buildFinancialNotes(context),
-            // -------------------------------------------------------------
             
             _buildIslamicInspiration(context),
             _buildHelpCenterNote(),
@@ -241,15 +242,17 @@ class HomeScreen extends StatelessWidget {
                 );
               },
             ),
+            // --- TITIK HIJAU NOTIFIKASI TETAP AMAN SEPERTI SEBELUMNYA ---
             Positioned(
-              top: 0,
-              right: 4,
+              top: 8, 
+              right: 8, 
               child: Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(
+                width: 9,
+                height: 9,
+                decoration: BoxDecoration(
                   color: Colors.green,
                   shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 1.5), 
                 ),
               ),
             )
@@ -749,6 +752,95 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  // --- WIDGET PENGGANTI BARU DARI WULAN: TAGIHAN & PEMBELIAN BULANAN ---
+  Widget _buildFavoriteBills(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Tagihan & Pembelian',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black87),
+              ),
+              InkWell(
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Membuka pengaturan tagihan')),
+                  );
+                },
+                child: const Text(
+                  'Atur',
+                  style: TextStyle(fontSize: 12, color: Color(0xFF00A39D), fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 90,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                _buildBillItem(context, 'PLN', 'Token', Icons.electric_bolt, Colors.amber.shade400),
+                const SizedBox(width: 15),
+                _buildBillItem(context, 'Pulsa', 'Telkomsel', Icons.phone_android, Colors.red.shade400),
+                const SizedBox(width: 15),
+                _buildBillItem(context, 'PDAM', 'Air', Icons.water_drop, Colors.blue.shade400),
+                const SizedBox(width: 15),
+                _buildBillItem(context, 'BPJS', 'Kesehatan', Icons.health_and_safety, Colors.green.shade400),
+                const SizedBox(width: 15),
+                _buildBillItem(context, 'Internet', 'Indihome', Icons.wifi, Colors.deepPurple.shade400),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBillItem(BuildContext context, String title, String subtitle, IconData icon, Color color) {
+    return InkWell(
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Membayar $title $subtitle')),
+        );
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        width: 85,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.15),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            )
+          ],
+          border: Border.all(color: Colors.grey.withOpacity(0.1)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 24),
+            const SizedBox(height: 8),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11, color: Colors.black87)),
+            const SizedBox(height: 2),
+            Text(subtitle, style: const TextStyle(fontSize: 9, color: Colors.grey)),
+          ],
+        ),
+      ),
+    );
+  }
+  // -----------------------------------------------------------------------
+
   Widget _buildGoldInfoCard(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -1049,7 +1141,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // --- WIDGET BARU PENGGANTI DARI WULAN: CATATAN KEUANGAN ---
   Widget _buildFinancialNotes(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
