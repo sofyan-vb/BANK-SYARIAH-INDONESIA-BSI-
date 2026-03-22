@@ -39,8 +39,6 @@ class HomeScreen extends StatelessWidget {
             _buildGreeting(), 
             
             _buildMainBanner(context),
-            
-            // --- INI SUDAH WULAN GANTI JADI TOMBOL MENU SPESIAL YA ---
             _buildSpecialMenuButtons(context),
             
             const SizedBox(height: 15), 
@@ -54,6 +52,10 @@ class HomeScreen extends StatelessWidget {
             
             _buildRecentTransactions(context),
             _buildBranchAtmLocator(context),
+            
+            // --- INI FITUR BARU PENGGANTI DARI WULAN: CATATAN KEUANGAN ---
+            _buildFinancialNotes(context),
+            // -------------------------------------------------------------
             
             _buildIslamicInspiration(context),
             _buildHelpCenterNote(),
@@ -580,7 +582,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 5. TOMBOL MENU SPESIAL (JadiBerkah & Warteg Mobile)
   Widget _buildSpecialMenuButtons(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -592,7 +593,7 @@ class HomeScreen extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Menu JadiBerkah.ID ditekan!')), // Wulan ubah pesannya ya
+                    const SnackBar(content: Text('Menu JadiBerkah.ID ditekan!')), 
                   );
                 },
                 borderRadius: BorderRadius.circular(10),
@@ -626,7 +627,7 @@ class HomeScreen extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Menu Warteg Mobile ditekan!')), // Wulan ubah pesannya ya
+                    const SnackBar(content: Text('Menu Warteg Mobile ditekan!')), 
                   );
                 },
                 borderRadius: BorderRadius.circular(10),
@@ -1042,6 +1043,108 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // --- WIDGET BARU PENGGANTI DARI WULAN: CATATAN KEUANGAN ---
+  Widget _buildFinancialNotes(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.15),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
+          ],
+          border: Border.all(color: Colors.grey.withOpacity(0.1)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Catatan Keuangan Bulan Ini',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black87),
+                ),
+                InkWell(
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Membuka detail catatan keuangan')),
+                    );
+                  },
+                  child: const Text(
+                    'Detail',
+                    style: TextStyle(fontSize: 12, color: Color(0xFF00A39D), fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 15),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: const [
+                          Icon(Icons.arrow_downward, color: Colors.green, size: 14),
+                          SizedBox(width: 4),
+                          Text('Pemasukan', style: TextStyle(fontSize: 10, color: Colors.grey)),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      const Text('Rp 5.500.000', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black87)),
+                    ],
+                  ),
+                ),
+                Container(height: 30, width: 1, color: Colors.grey.withOpacity(0.3)),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: const [
+                          Icon(Icons.arrow_upward, color: Colors.red, size: 14),
+                          SizedBox(width: 4),
+                          Text('Pengeluaran', style: TextStyle(fontSize: 10, color: Colors.grey)),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      const Text('Rp 3.250.000', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black87)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 15),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: LinearProgressIndicator(
+                value: 0.6, 
+                backgroundColor: Colors.grey.shade200,
+                color: const Color(0xFF00A39D),
+                minHeight: 6,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Pengeluaranmu masih dalam batas aman. Pertahankan, Sofyan!',
+              style: TextStyle(fontSize: 10, color: Colors.grey, fontStyle: FontStyle.italic),
+            )
           ],
         ),
       ),
