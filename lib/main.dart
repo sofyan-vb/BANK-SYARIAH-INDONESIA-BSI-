@@ -38,20 +38,22 @@ class HomeScreen extends StatelessWidget {
             _buildSearchBar(),
             _buildGreeting(), 
             
-            _buildBalanceCard(),
-            
             _buildMainBanner(context),
-            _buildMiniBanners(context),
+            
+            // --- INI SUDAH WULAN GANTI JADI TOMBOL MENU SPESIAL YA ---
+            _buildSpecialMenuButtons(context),
+            
+            const SizedBox(height: 15), 
+            
+            _buildBalanceCard(),
+
             _buildMenuGrid(context), 
             
             _buildGoldInfoCard(context),
             _buildPromoSection(context),
             
             _buildRecentTransactions(context),
-            
-            // --- INI FITUR BARU TAMBAHAN DARI WULAN: LOKASI ATM/CABANG ---
             _buildBranchAtmLocator(context),
-            // -------------------------------------------------------------
             
             _buildIslamicInspiration(context),
             _buildHelpCenterNote(),
@@ -578,7 +580,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMiniBanners(BuildContext context) {
+  // 5. TOMBOL MENU SPESIAL (JadiBerkah & Warteg Mobile)
+  Widget _buildSpecialMenuButtons(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
@@ -589,7 +592,7 @@ class HomeScreen extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Banner JadiBerkah diklik!')),
+                    const SnackBar(content: Text('Menu JadiBerkah.ID ditekan!')), // Wulan ubah pesannya ya
                   );
                 },
                 borderRadius: BorderRadius.circular(10),
@@ -623,7 +626,7 @@ class HomeScreen extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Banner Warteg Mobile diklik!')),
+                    const SnackBar(content: Text('Menu Warteg Mobile ditekan!')), // Wulan ubah pesannya ya
                   );
                 },
                 borderRadius: BorderRadius.circular(10),
@@ -948,7 +951,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // WIDGET TAMBAHAN BARU: Lokasi Cabang & ATM (Biar relate sama kampus Sofyan)
   Widget _buildBranchAtmLocator(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -983,7 +985,7 @@ class HomeScreen extends StatelessWidget {
               children: [
                 _locationCard(context, Icons.account_balance, 'KCP Pamekasan', '1.2 km'),
                 const SizedBox(width: 15),
-                _locationCard(context, Icons.atm, 'ATM BSI UIM', '0.1 km'), // Spesial buat Sofyan!
+                _locationCard(context, Icons.atm, 'ATM BSI UIM', '0.1 km'), 
                 const SizedBox(width: 15),
                 _locationCard(context, Icons.atm, 'ATM Area Alun-alun', '2.5 km'),
               ],
