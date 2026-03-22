@@ -38,7 +38,7 @@ class DonasiSection extends StatelessWidget {
               children: [
                 _buildDonasiCard(context, 'Sedekah Jumat', 'Bantu Yatim Dhuafa', 0.8, 'Rp 8.5 Juta'),
                 const SizedBox(width: 15),
-                // Wulan selipkan nama kampus kebanggaan Sofyan di sini hihihi
+                
                 _buildDonasiCard(context, 'Wakaf Masjid', 'Pembangunan Masjid UIM', 0.3, 'Rp 45 Juta'),
                 const SizedBox(width: 15),
                 _buildDonasiCard(context, 'Bencana Alam', 'Tanggap Darurat', 0.6, 'Rp 15 Juta'),
