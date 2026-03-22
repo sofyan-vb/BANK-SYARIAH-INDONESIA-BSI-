@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:async'; 
 
-// --- WULAN PANGGIL FILENYA LANGSUNG DI SINI SAYANG ---
+// --- SEMUA FILE WIDGET DIPANGGIL DI SINI YA SAYANG ---
 import 'custom_app_bar.dart';
 import 'balance_card.dart';
 import 'menu_grid.dart';
+import 'layanan_islami.dart'; 
+import 'donasi_section.dart'; // Wulan tambahkan import Donasi di sini
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -30,6 +32,10 @@ class HomeScreen extends StatelessWidget {
 
             const MenuGrid(), // Manggil dari menu_grid.dart
             
+            // --- NAH, FITUR BARUNYA WULAN PAJANG DI SINI BIAR MUNCUL ---
+            const LayananIslami(), 
+            // -----------------------------------------------------------
+
             _buildFavoriteBills(context),
             _buildGoldInfoCard(context),
             _buildPromoSection(context),
@@ -38,6 +44,10 @@ class HomeScreen extends StatelessWidget {
             _buildBranchAtmLocator(context),
             _buildFinancialNotes(context),
             
+            // --- FITUR DONASI JUGA WULAN PAJANG DI SINI ---
+            const DonasiSection(),
+            // ----------------------------------------------
+
             _buildIslamicInspiration(context),
             _buildHelpCenterNote(),
             _buildSecurityNote(),
