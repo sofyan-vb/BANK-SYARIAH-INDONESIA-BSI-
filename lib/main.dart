@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart'; 
-
+import 'splash_screen.dart'; 
 
 void main() {
   runApp(const BSIApp());
@@ -18,7 +17,7 @@ class BSIApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF00A39D)), 
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const SplashScreen(), 
     );
   }
 }
