@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const CustomAppBar(), // Manggil dari custom_app_bar.dart
+      appBar: const CustomAppBar(), 
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
             _buildSpecialMenuButtons(context),
             
             const SizedBox(height: 15), 
-            const BalanceCard(), 
+            const BalanceCard(),
             const MenuGrid(), 
             const LayananIslami(), 
 
@@ -37,7 +37,6 @@ class HomeScreen extends StatelessWidget {
             _buildFinancialNotes(context),
             
             const DonasiSection(),
-            
 
             _buildIslamicInspiration(context),
             _buildHelpCenterNote(),
@@ -383,11 +382,38 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildHelpCenterNote() {
-    return Padding(padding: const EdgeInsets.only(top: 15, bottom: 5), child: Row(mainAxisAlignment: MainAxisAlignment.center, children: const [Icon(Icons.headset_mic, color: Color(0xFF00A39D), size: 14), SizedBox(width: 5), Text('Butuh bantuan? Hubungi BSI Call 14040', style: TextStyle(fontSize: 10, color: Color(0xFF00A39D), fontWeight: FontWeight.bold))]));
+    return Padding(
+      padding: const EdgeInsets.only(top: 40, bottom: 2), 
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center, 
+        children: const [
+          Icon(Icons.headset_mic, color: Color(0xFF00A39D), size: 14), 
+          SizedBox(width: 5), 
+          Text('Butuh bantuan? Hubungi BSI Call 14040', style: TextStyle(fontSize: 10, color: Color(0xFF00A39D), fontWeight: FontWeight.bold))
+        ]
+      )
+    );
   }
 
   Widget _buildSecurityNote() {
-    return Padding(padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 20), child: Row(mainAxisAlignment: MainAxisAlignment.center, children: const [Icon(Icons.security, color: Colors.grey, size: 14), SizedBox(width: 5), Expanded(child: Text('BSI tidak pernah meminta PIN, Kata Sandi, atau OTP Anda. Jaga selalu kerahasiaan data pribadi Anda.', textAlign: TextAlign.center, style: TextStyle(fontSize: 9, color: Colors.grey)))]));
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 20), 
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start, 
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(Icons.security, color: Colors.grey, size: 14),
+          SizedBox(width: 5),
+          Expanded(
+            child: Text(
+              'BSI tidak pernah meminta PIN, Kata Sandi, atau OTP Anda. Jaga selalu kerahasiaan data pribadi Anda.',
+              textAlign: TextAlign.left, 
+              style: TextStyle(fontSize: 9, color: Colors.grey, height: 1.5), 
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildQRISButton(BuildContext context) {
