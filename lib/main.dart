@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'splash_screen.dart'; 
+import 'splash_screen.dart';
 
 void main() {
   runApp(const BSIApp());
@@ -14,10 +14,10 @@ class BSIApp extends StatelessWidget {
       title: 'Tugas UTS Sofyan',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF00A39D)), 
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF00A39D)),
         useMaterial3: true,
       ),
-      home: const SplashScreen(), 
+      home: const SplashScreen(),
     );
   }
 }

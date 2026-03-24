@@ -70,7 +70,22 @@ class _BalanceCardState extends State<BalanceCard> {
                       ],
                     ),
                     const SizedBox(height: 6),
-                    const Text('SOFYAN IBNU GHAZALI', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1.0)),
+                    
+                    
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2), 
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.person, color: Colors.white, size: 14), 
+                        ),
+                        const SizedBox(width: 6),
+                        const Text('SOFYAN IBNU GHAZALI', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1.0)),
+                      ],
+                    ),
                   ],
                 ),
               ),
